@@ -1,4 +1,4 @@
-# fburl.cr
+# fburl.cr [![Build Status](https://travis-ci.org/maiha/fburl.cr.svg?branch=master)](https://travis-ci.org/maiha/fburl.cr)
 
 `fburl` is a [Twurl](https://github.com/twitter/twurl) clone for Facebook.
 
