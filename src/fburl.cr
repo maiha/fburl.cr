@@ -7,6 +7,7 @@ require "try"
 require "toml-config"
 require "pretty"
 
+require "./ext/*"
 require "./fburl/*"
 
 module Fburl

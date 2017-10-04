@@ -37,6 +37,7 @@ class Fburl::CLI
   option data    : Data   , "-d DATA", "POST data" do extract_data!(v); end
   option atoken  : String?, "-a TOKEN", "Your access token", nil
   option rcpath  : String , "-K PATH" , "The path of config file", "~/.fburlrc"
+  option dump    : String?, "-D FILE", "Write http headers to the file", nil
   option dryrun  : Bool   , "-n", "Dryrun with printing curl command", false
   option verbose : Bool   , "-v", "Verbose output", false
   option version : Bool   , "--version", "Print the version and exit", false
@@ -51,6 +52,7 @@ class Fburl::CLI
 
   def setup
     extract_path!
+    opts.dump = dump
     opts.host = host
     opts.method = Method.parse(self.method)
     opts.access_token = atoken

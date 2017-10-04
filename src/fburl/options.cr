@@ -1,6 +1,7 @@
 class Fburl::Options
   SUPPORTED_COMMANDS = Controller::Registry.keys
 
+  property dump     : String? = nil
   property protocol : String  = "https"
   property host     : String  = "graph.facebook.com"
   property method   : Method  = Method::GET
@@ -37,10 +38,10 @@ class Fburl::Options
       data.each do |key, value|
         params << "%s=%s" % [URI.escape(key), URI.escape(value)]
       end
-      delimiter = path.includes?("?") ? "&" : "?"
-      path + delimiter + params.join("&")
+      delimiter = path!.includes?("?") ? "&" : "?"
+      path! + delimiter + params.join("&")
     else
-      path
+      path!
     end
   end
 end

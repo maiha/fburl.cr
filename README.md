@@ -29,18 +29,23 @@
 % vi ~/.fburlrc     # set access_token
 ```
 
+#### using http
+
+```shell
+% fburl /v2.10/me      # perform the GET request
+% fburl /v2.10/me -D - # dump header like cURL
+```
+
+- TODO: now support only `GET` method
+
 #### using curl
 
-Now, we support only `curl` mode. (aka. dryrun)
+aka. dryrun
 
 ```shell
 % fburl /v2.10/me -n      # print curl command 
 % fburl /v2.10/me -n | sh # run it
 ```
-
-#### using http
-
-not implemented yet.
 
 ## Roadmap
 
@@ -51,7 +56,8 @@ not implemented yet.
 - [ ] Command : Alias(placeholder)
 - [ ] Command : Authorization(support user account)
 - [x] Command : Config
-- [ ] Command : Request(http)
+- [x] Command : Request(GET)
+- [ ] Command : Request(POST)
 - [x] Command : Request(curl)
 
 ## Contributing

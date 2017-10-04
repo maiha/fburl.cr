@@ -1,6 +1,4 @@
 class Fburl::Controller::RequestController < Fburl::Controller::Base
-  NO_URI_MESSAGE = "No URI specified"
-
   def dispatch
     authorize!
     check_subcmds!
@@ -16,11 +14,9 @@ class Fburl::Controller::RequestController < Fburl::Controller::Base
 
   def perform_request
     client.perform_request_from_options(options) { |response|
-      p response
-      #      response.read_body { |chunk| CLI.print chunk }
+      dump_header(response)
+      dump_body(response)
     }
-#  rescue URI::InvalidURIError
-#    CLI.puts NO_URI_MESSAGE
   end
 
   def needs_access_token?
@@ -50,6 +46,18 @@ class Fburl::Controller::RequestController < Fburl::Controller::Base
       io << "%s%s" % [options.base_url, options.path]
     end    
   end
+
+  private def dump_header(response)
+    case file = options.dump
+    when nil ; # NOP
+    when "-" ; @output.puts response.protocol_header
+    else     ; File.write(file, response.protocol_header)
+    end
+  end
   
+  private def dump_body(response)
+    print response.body
+  end
+
   Registry["request"] = self
 end

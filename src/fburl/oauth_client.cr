@@ -11,10 +11,12 @@ record Fburl::OAuthClient,
   def perform_request_from_options(options)
     client = HTTP::Client.new(options.host, tls: true)
     if options.method.get?
-#      client.get(options.request_path)
+      response = client.get(options.request_path)
+      yield response
     else
+      puts "# DEBUG: options"
+      p options
+      raise Errors::NotImplemented.new("Method(%s)" % options.method)
     end
-
-    yield options
   end
 end

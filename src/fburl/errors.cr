@@ -16,8 +16,9 @@ module Fburl::Errors
     end
   end
 
+  define_error NotImplemented = "Not implemented yet: %s"
   define_error InvalidConfig  = "Invalid config: %s"
-  define_error PathNotFound   = "Path not found"
+  define_error PathNotFound   = "No URI specified"
   define_error RcfileNotFound = "rcfile is not found: '%s'"
   define_error NotAuthorized  = "You need to authorize first."
   define_error UnknownCommand = "Unknown command: %s"
