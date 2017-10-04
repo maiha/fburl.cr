@@ -36,7 +36,7 @@ class Fburl::Controller::RequestController < Fburl::Controller::Base
   def curl_string
     lf = "\\\n     "
     String.build do |io|
-      io << "curl "
+      io << "curl -s "
       if options.method.get?
         io << "-G "
       else

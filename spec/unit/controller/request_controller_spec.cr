@@ -9,7 +9,7 @@ describe Fburl::Controller::RequestController do
           cli.run(["-a", "abc", "/foo", "-n"])
         end
         stdout.should eq <<-EOF
-          curl -G \\
+          curl -s -G \\
                -d 'access_token=abc' \\
                https://graph.facebook.com/foo
 
