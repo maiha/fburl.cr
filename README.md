@@ -10,7 +10,7 @@
 - implements: command pattern with `controller`
 
 #### dialect
-- config: [TOML](https://github.com/toml-lang/toml) format rather than `yaml`
+- config: use [TOML](https://github.com/toml-lang/toml) format rather than `YAML`
 
 ## Installation
 

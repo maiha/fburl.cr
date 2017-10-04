@@ -19,6 +19,8 @@ dependencies:
 
 ```crystal
 require "fburl"
+
+Fburl::CLI.run(["/v2.10/me", "-K", "/tmp/fburlrc"])
 ```
 
 ## Development
