@@ -171,7 +171,6 @@ class Fburl::CLI
     # never forget to set 'read_rcfile = false', otherwise it will cause infinite loop.
     app = new(read_rcfile: false)
     app.setup(argv)
-    app.setup
     return app.opts.command
   end
 end

@@ -6,19 +6,19 @@ crystal: 0.22.0
 dependencies:
   app:
     github: maiha/app.cr
-    version: 0.4.0
+    version: ">= 0.4.0"
   toml-config:
     github: maiha/toml-config.cr
-    version: 0.3.0
+    version: ">= 0.3.0"
   opts:
     github: maiha/opts.cr
-    version: ~> 0.3.3              # support inherit
+    version: ">= 0.4.0"
   try:
     github: maiha/try.cr
-    version: ~> 0.3.0
+    version: ">= 0.3.0"
   pretty:
     github: maiha/pretty.cr
-    version: ~> 0.1.0
+    version: ">= 0.1.0"
 
 authors:
   - maiha <maiha@wota.jp>
