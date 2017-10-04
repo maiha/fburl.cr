@@ -8,11 +8,10 @@ record Fburl::OAuthClient,
     try_rc.get
   end
   
-  def perform_request_from_options(options)
+  def execute(options : Options) : HTTP::Client::Response
     client = HTTP::Client.new(options.host, tls: true)
     if options.method.get?
-      response = client.get(options.request_path)
-      yield response
+      return client.get(options.request_path)
     else
       puts "# DEBUG: options"
       p options

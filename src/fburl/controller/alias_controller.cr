@@ -1,6 +1,9 @@
 require "./base"
 
 class Fburl::Controller::AliasController < Fburl::Controller::Base
+  val authorize = false
+  val subcmds   = true
+
   def dispatch
     case options.subcmds.size
     when 0
@@ -10,13 +13,6 @@ class Fburl::Controller::AliasController < Fburl::Controller::Base
     else
       pp options
     end
-  end
-
-  def dryrun
-  end
-
-  def needs_access_token?
-    false
   end
 
   private def show

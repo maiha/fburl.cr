@@ -59,15 +59,12 @@ class Fburl::CLI
     opts.data.merge!(data)
     opts.command = args.shift if args.any?
     opts.subcmds = args
+    opts.command = "dryrun" if dryrun
     super() if opts.path.nil?
   end
 
   def run
-    if dryrun
-      controller.dryrun
-    else
-      controller.dispatch
-    end
+    controller.dispatch
   end
 
   def client

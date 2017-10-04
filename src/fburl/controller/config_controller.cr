@@ -1,6 +1,9 @@
 require "./base"
 
 class Fburl::Controller::ConfigController < Fburl::Controller::Base
+  val authorize = false
+  val subcmds   = true
+
   SUB_COMMANDS = Array(String).new
 
   def dispatch
@@ -9,13 +12,6 @@ class Fburl::Controller::ConfigController < Fburl::Controller::Base
     {% end %}
 
     help
-  end
-
-  def dryrun
-  end
-
-  def needs_access_token?
-    false
   end
 
   protected def init

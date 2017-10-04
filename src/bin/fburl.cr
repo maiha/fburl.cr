@@ -1,3 +1,4 @@
 require "../fburl"
 
-Fburl::CLI.run
+Fburl::CLI.run.output.flush
+

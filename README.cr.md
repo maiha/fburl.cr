@@ -20,8 +20,15 @@ dependencies:
 ```crystal
 require "fburl"
 
+# run at once
 Fburl::CLI.run(["/v2.10/me", "-K", "/tmp/fburlrc"])
+
+# execute sequentially
+req = Fburl.request("/v2.10/me -a foo") # => RequestController
+res = req.execute                       # => HTTP::Client::Response
 ```
+
+- NOTE: we need some auth method like '-K' or '-a' because `~/.fburlrc` is not automatically loaded in library mode
 
 ## Development
 
