@@ -59,6 +59,7 @@ aka. dryrun
 - [x] Command : Request(GET)
 - [ ] Command : Request(POST)
 - [x] Command : Request(curl)
+- [x] Library : `execute` returns `HTTP::Client::Response`
 
 ## Contributing
 
