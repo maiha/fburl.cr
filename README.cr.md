@@ -26,6 +26,10 @@ Fburl::CLI.run(["/v2.10/me", "-K", "/tmp/fburlrc"])
 # execute sequentially
 req = Fburl.request("/v2.10/me -a foo") # => RequestController
 res = req.execute                       # => HTTP::Client::Response
+
+# dryrun
+req = Fburl.dryrun("/v2.10/me -a foo")  # => DryrunController
+res = req.curl_string                   # => "curl -G ..."
 ```
 
 - NOTE: we need some auth method like '-K' or '-a' because `~/.fburlrc` is not automatically loaded in library mode
