@@ -23,6 +23,8 @@ class Fburl::Controller::RequestController < Fburl::Controller::Base
   private def dump_body(response)
     if options.rawdata
       print response.body
+    elsif options.colorize
+      puts Pretty.json(response.body, color: true)
     else
       puts Pretty.json(response.body)
     end

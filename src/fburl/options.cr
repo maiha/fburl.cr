@@ -11,6 +11,7 @@ class Fburl::Options
   property rcpath   : String  = "~/.fburlrc"
   property subcmds  : Subcmds = Subcmds.new
   property rawdata  : Bool    = false
+  property colorize : Bool    = false
   property? access_token : String? = nil
 
   def path!

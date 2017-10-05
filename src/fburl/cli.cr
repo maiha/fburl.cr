@@ -40,6 +40,7 @@ class Fburl::CLI
   option dump    : String?, "-D FILE", "Write http headers to the file", nil
   option dryrun  : Bool   , "-n", "Dryrun with printing curl command", false
   option rawdata : Bool   , "--raw", "Print raw data without formatting", false
+  option color   : Bool   , "--color", "Colorize json string", false
   option verbose : Bool   , "-v", "Verbose output", false
   option version : Bool   , "--version", "Print the version and exit", false
   option help    : Bool   , "--help"   , "Output this help and exit" , false
@@ -66,6 +67,7 @@ class Fburl::CLI
     opts.subcmds = args
     opts.command = "dryrun" if dryrun
     opts.rawdata = rawdata
+    opts.colorize = color
     super() if opts.path.nil?
   end
 
