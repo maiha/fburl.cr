@@ -1,38 +1,26 @@
 require "./spec_helper"
 
-private def extract(argv) : String
-  Fburl::CLI.parse_command(argv)
-end
-
 describe Fburl::CLI do
-  describe ".parse_command" do
-    context "()" do
-      it "should return 'request'" do
-        extract([] of String).should eq("request")
+  describe "detect rcfile" do
+    context "(with -K)" do
+      it "should detect it if exist" do
+        cli = Fburl::CLI.new
+        cli.setup("-K /dev/null")
+        cli.try_rc.map(&.path).get?.should eq("/dev/null")
+      end
+
+      it "should not detect if not exist" do
+        cli = Fburl::CLI.new
+        cli.setup("-K /no-such-file-xxx")
+        cli.try_rc.map(&.path).get?.should eq(nil)
       end
     end
 
-    context "([config])" do
-      it "should return 'config'" do
-        extract(["config"]).should eq("config")
-      end
-    end
-
-    context "([config, show])" do
-      it "should return 'config'" do
-        extract(["config", "show"]).should eq("config")
-      end
-    end
-
-    context "(alias with options)" do
-      it "should return 'alias'" do
-        extract("alias me /v2.5/me -K #{fburlrc}".split).should eq("alias")
-      end
-    end
-
-    context "(with invalid command xxx)" do
-      it "should return 'xxx' without exceptions" do
-        extract("xxx".split).should eq("xxx")
+    context "(double -K)" do
+      it "should detect latter one" do
+        cli = Fburl::CLI.new
+        cli.setup("-K /no-such-file-xxx /v2.5/me -K /dev/null")
+        cli.try_rc.map(&.path).get?.should eq("/dev/null")
       end
     end
   end

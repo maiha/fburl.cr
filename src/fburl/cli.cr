@@ -43,6 +43,10 @@ class Fburl::CLI
   option version : Bool   , "--version", "Print the version and exit", false
   option help    : Bool   , "--help"   , "Output this help and exit" , false
 
+  def setup(argv : String)
+    setup(argv.split)
+  end
+
   def setup(argv : Array(String))
     set_rcpath!(argv)
     @try_rc = read_rcfile!
@@ -126,9 +130,12 @@ class Fburl::CLI
 
   private def set_rcpath!(argv)
     # respect argv for "-K"
-    if idx = argv.index("-K")
-      if idx + 1 < argv.size
-        opts.rcpath = argv[idx + 1]
+    # IMPORTANT: use latter one
+    argv.each_with_index do |v, idx|
+      if v == "-K"
+        if idx + 1 < argv.size
+          opts.rcpath = argv[idx + 1]
+        end
       end
     end
   end
