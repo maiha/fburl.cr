@@ -10,6 +10,8 @@ class Fburl::Options
   property data     : Data    = Data.new
   property rcpath   : String  = "~/.fburlrc"
   property subcmds  : Subcmds = Subcmds.new
+  property paging   : Bool    = false
+  property maxpage  : Int32   = 50
   property rawdata  : Bool    = false
   property colorize : Bool    = false
   property? access_token : String? = nil

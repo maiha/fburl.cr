@@ -29,7 +29,7 @@
 % vi ~/.fburlrc     # set access_token
 ```
 
-#### using http
+#### basic
 
 ```shell
 % fburl /v2.10/me      # perform the GET request
@@ -38,9 +38,17 @@
 
 - TODO: now support only `GET` method
 
-#### using curl
+#### paging
 
-aka. dryrun
+If `--next` option is given, client automatically follows **next** link
+until the page count reaches `--max-next` (default: 50).
+
+```shell
+% fburl /v2.10/...        | jq '.data|length'  # => 25
+% fburl /v2.10/... --next | jq '.data|length'  # => 128
+```
+
+#### dryrun
 
 ```shell
 % fburl /v2.10/me -n      # print curl command 
@@ -60,6 +68,7 @@ aka. dryrun
 - [ ] Command : Request(POST)
 - [x] Command : Request(curl)
 - [x] Library : `execute` returns `HTTP::Client::Response`
+- [x] Client  : Paging
 
 ## Contributing
 

@@ -19,6 +19,9 @@ dependencies:
   pretty:
     github: maiha/pretty.cr
     version: ">= 0.2.0"
+  jq:
+    github: maiha/jq.cr
+    version: ">= 0.4.2"
 
 authors:
   - maiha <maiha@wota.jp>

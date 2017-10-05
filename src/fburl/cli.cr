@@ -41,6 +41,8 @@ class Fburl::CLI
   option dryrun  : Bool   , "-n", "Dryrun with printing curl command", false
   option rawdata : Bool   , "--raw", "Print raw data without formatting", false
   option color   : Bool   , "--color", "Colorize json string", false
+  option paging  : Bool   , "--next", "Follow next paging link", false
+  option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 50
   option verbose : Bool   , "-v", "Verbose output", false
   option version : Bool   , "--version", "Print the version and exit", false
   option help    : Bool   , "--help"   , "Output this help and exit" , false
@@ -68,6 +70,8 @@ class Fburl::CLI
     opts.command = "dryrun" if dryrun
     opts.rawdata = rawdata
     opts.colorize = color
+    opts.paging  = paging
+    opts.maxpage = maxpage
     super() if opts.path.nil?
   end
 

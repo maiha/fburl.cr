@@ -15,7 +15,7 @@ class Fburl::Controller::RequestController < Fburl::Controller::Base
   private def dump_header(response)
     case file = options.dump
     when nil ; # NOP
-    when "-" ; @output.puts response.protocol_header
+    when "-" ; @output.print(response.protocol_header + "\r\n\r\n")
     else     ; File.write(file, response.protocol_header)
     end
   end

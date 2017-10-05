@@ -6,6 +6,7 @@ require "app"
 require "try"
 require "toml-config"
 require "pretty"
+require "jq"
 
 require "./ext/*"
 require "./fburl/*"
