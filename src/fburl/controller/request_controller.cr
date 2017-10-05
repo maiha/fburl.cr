@@ -21,7 +21,11 @@ class Fburl::Controller::RequestController < Fburl::Controller::Base
   end
   
   private def dump_body(response)
-    print response.body
+    if options.rawdata
+      print response.body
+    else
+      puts Pretty.json(response.body)
+    end
   end
 
   Registry["request"] = self

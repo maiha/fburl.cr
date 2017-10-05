@@ -39,6 +39,7 @@ class Fburl::CLI
   option rcpath  : String , "-K PATH" , "The path of config file", "~/.fburlrc"
   option dump    : String?, "-D FILE", "Write http headers to the file", nil
   option dryrun  : Bool   , "-n", "Dryrun with printing curl command", false
+  option rawdata : Bool   , "--raw", "Print raw data without formatting", false
   option verbose : Bool   , "-v", "Verbose output", false
   option version : Bool   , "--version", "Print the version and exit", false
   option help    : Bool   , "--help"   , "Output this help and exit" , false
@@ -64,6 +65,7 @@ class Fburl::CLI
     opts.command = args.shift if args.any?
     opts.subcmds = args
     opts.command = "dryrun" if dryrun
+    opts.rawdata = rawdata
     super() if opts.path.nil?
   end
 

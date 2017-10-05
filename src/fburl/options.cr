@@ -10,6 +10,7 @@ class Fburl::Options
   property data     : Data    = Data.new
   property rcpath   : String  = "~/.fburlrc"
   property subcmds  : Subcmds = Subcmds.new
+  property rawdata  : Bool    = false
   property? access_token : String? = nil
 
   def path!
