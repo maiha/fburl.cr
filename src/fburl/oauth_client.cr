@@ -23,6 +23,8 @@ record Fburl::OAuthClient,
     res = client.get(options.request_path)
     if options.paging && res.status_code == 200
       get_next_pages(options, res)
+    elsif !options.rawdata && res.status_code == 200
+      extract_data_wrapper(res)
     else
       res
     end
@@ -30,9 +32,11 @@ record Fburl::OAuthClient,
 
   private def accumulate_data!(io, body) : String?
     json = JSON.parse(body)    
-    json["data"].as_a.each do |v|
-      joint = (io.pos == 0) ? "[" : ","
-      io << joint << v.to_json << "\n"
+    if data = json["data"]?.try(&.as_a)
+      data.each do |v|
+        joint = (io.pos == 0) ? "[" : ","
+        io << joint << v.to_json << "\n"
+      end
     end
 
     if paging = json["paging"]?
@@ -64,11 +68,20 @@ record Fburl::OAuthClient,
 
     # closing data
     data << (data.pos == 0 ? "null" : "]")
-    body = String.build do |io|
-      io << "{\"data\": " << String.new(data.to_slice) << "}"
-    end
+    body = String.new(data.to_slice)
+    body = String.build{|io| io << "{\"data\": " << body << "}"  } if options.rawdata
 
     # build accumulated response
+    build_response(res, body)
+  end
+
+  # body: "{data: ...}" => "..."
+  private def extract_data_wrapper(res) : HTTP::Client::Response
+    body = JSON.parse(res.body)["data"]?.try(&.to_json) || return res
+    build_response(res, body)
+  end
+
+  private def build_response(res : HTTP::Client::Response, body : String)
     headers = res.headers
     headers.delete("Content-Encoding")
     headers.delete("Content-Length")

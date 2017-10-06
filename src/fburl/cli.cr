@@ -39,7 +39,7 @@ class Fburl::CLI
   option rcpath  : String , "-K PATH" , "The path of config file", "~/.fburlrc"
   option dump    : String?, "-D FILE", "Write http headers to the file", nil
   option dryrun  : Bool   , "-n", "Dryrun with printing curl command", false
-  option rawdata : Bool   , "--raw", "Print raw data without formatting", false
+  option rawdata : Bool   , "--raw", "Print raw response without stripping '.data'", false
   option color   : Bool   , "--color", "Colorize json string", false
   option paging  : Bool   , "--next", "Follow next paging link", false
   option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 50
