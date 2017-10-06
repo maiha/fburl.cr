@@ -9,9 +9,8 @@ record Fburl::OAuthClient,
   end
 
   def execute(options : Options) : HTTP::Client::Response
-    client = HTTP::Client.new(options.host, tls: true)
     if options.method.get?
-      get(client, options)
+      get(options)
     else
       puts "# DEBUG: options"
       p options
@@ -19,10 +18,11 @@ record Fburl::OAuthClient,
     end
   end
 
-  private def get(client, options : Options) : HTTP::Client::Response
+  private def get(options : Options) : HTTP::Client::Response
+    client = HTTP::Client.new(options.host, tls: true)
     res = client.get(options.request_path)
     if options.paging && res.status_code == 200
-      get_next_pages(client, options, res)
+      get_next_pages(options, res)
     else
       res
     end
@@ -44,14 +44,16 @@ record Fburl::OAuthClient,
     return nil
   end
 
-  private def get_next_pages(client, options, res) : HTTP::Client::Response
+  private def get_next_pages(options, res) : HTTP::Client::Response
     data = IO::Memory.new
     url  = accumulate_data!(data, res.body) || return res
 
     # we have already finished `GET` for 1st page
     (2..options.maxpage).each do |page|
       if url
-        res = client.get(url)
+        uri    = URI.parse(url)
+        client = HTTP::Client.new(uri)
+        res    = client.get(uri.full_path)
         res.headers["X-FBURL-PAGE"] = page.to_s
         return res if res.status_code != 200
         url = accumulate_data!(data, res.body)
