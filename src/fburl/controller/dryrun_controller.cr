@@ -16,8 +16,16 @@ class Fburl::Controller::DryrunController < Fburl::Controller::Base
         io << "-X %s " % options.method.to_s
       end
       io << lf
+
+      # data
       options.data.each do |key, val|
         io << "-d '%s=%s' " % [key, val]
+        io << lf
+      end
+
+      # form
+      options.form.each do |key, val|
+        io << "-F '%s=%s' " % [key, val]
         io << lf
       end
       io << "%s%s" % [options.base_url, options.path]

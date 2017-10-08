@@ -11,6 +11,8 @@ record Fburl::OAuthClient,
   def execute(options : Options) : HTTP::Client::Response
     if options.method.get?
       get(options)
+    elsif options.method.post?
+      post(options)
     else
       puts "# DEBUG: options"
       p options
@@ -19,7 +21,7 @@ record Fburl::OAuthClient,
   end
 
   private def get(options : Options) : HTTP::Client::Response
-    client = HTTP::Client.new(options.host, tls: true)
+    client = new_http_client(options)
     res = client.get(options.request_path)
     if options.paging && res.status_code == 200
       get_next_pages(options, res)
@@ -30,7 +32,38 @@ record Fburl::OAuthClient,
     end
   end
 
-  private def accumulate_data!(io, body) : String?
+  private def post(options : Options) : HTTP::Client::Response
+    client = new_http_client(options)
+    headers = HTTP::Headers.new
+    
+    body = String.build do |io|
+      HTTP::FormData.build(io) do |builder|
+        headers["Content-Type"] = builder.content_type
+        options.form.each do |k,v|
+          builder.field(k, v)
+        end
+      end
+    end
+
+    request = new_request(options, headers, body)
+    res = client.exec(request)
+
+    return res
+  end
+
+  private def new_http_client(options)
+    HTTP::Client.new(options.uri)
+  end
+
+  private def new_request(options, headers, body)
+    path = options.batch? ? "/" : options.request_path
+    HTTP::Request.new(options.method.to_s, path, headers, body).tap do |request|
+      request.headers["Host"] ||= options.host
+      request.headers["UserAgent"] ||= options.ua
+    end
+  end
+
+  private def accumulate_data_and_return_next!(io, body) : String?
     json = JSON.parse(body)    
     if data = json["data"]?.try(&.as_a)
       data.each do |v|
@@ -50,7 +83,7 @@ record Fburl::OAuthClient,
 
   private def get_next_pages(options, res) : HTTP::Client::Response
     data = IO::Memory.new
-    url  = accumulate_data!(data, res.body) || return res
+    url  = accumulate_data_and_return_next!(data, res.body) || return res
 
     # we have already finished `GET` for 1st page
     (2..options.maxpage).each do |page|
@@ -60,7 +93,7 @@ record Fburl::OAuthClient,
         res    = client.get(uri.full_path)
         res.headers["X-FBURL-PAGE"] = page.to_s
         return res if res.status_code != 200
-        url = accumulate_data!(data, res.body)
+        url = accumulate_data_and_return_next!(data, res.body)
       else
         break
       end

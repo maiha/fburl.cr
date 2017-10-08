@@ -1,4 +1,4 @@
-require "http/client"
+require "http"
 require "uri"
 require "yaml"
 

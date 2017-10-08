@@ -65,7 +65,8 @@ until the page count reaches `--max-next` (default: 50).
 - [ ] Command : Authorization(support user account)
 - [x] Command : Config
 - [x] Command : Request(GET)
-- [ ] Command : Request(POST)
+- [x] Command : Request(POST)
+- [ ] Command : Request(BATCH)
 - [x] Command : Request(curl)
 - [x] Library : `execute` returns `HTTP::Client::Response`
 - [x] Client  : Paging

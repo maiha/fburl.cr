@@ -17,11 +17,13 @@ module Fburl::Errors
   end
 
   define_error NotImplemented = "Not implemented yet: %s"
+  define_error InvalidOption  = "Invalid option: %s"
   define_error InvalidConfig  = "Invalid config: %s"
+  define_error BatchJsonError = "Batch parameter must be a JSON array: %s"
   define_error PathNotFound   = "No URI specified"
   define_error RcfileNotFound = "rcfile is not found: '%s'"
   define_error NotAuthorized  = "You need to authorize first."
   define_error UnknownCommand = "Unknown command: %s"
   define_error UnknownSubcmds = "Unknown subcmds: %s"
-  define_error EqualNotFound  = "Post data needs '=', but '%s' is given"
+  define_error EqualNotFound  = "Data needs '=', but '%s' is given"
 end

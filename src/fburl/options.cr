@@ -1,13 +1,16 @@
 class Fburl::Options
   SUPPORTED_COMMANDS = Controller::Registry.keys
+  USER_AGENT = "fburl/%s" % Shard.version
 
+  property ua       : String  = USER_AGENT
   property dump     : String? = nil
-  property protocol : String  = "https"
-  property host     : String  = "graph.facebook.com"
+  property uri      : URI     = URI.parse("https://graph.facebook.com")
   property method   : Method  = Method::GET
   property command  : String  = "request"
+#  property batch    : String? = nil
   property path     : String? = nil
   property data     : Data    = Data.new
+  property form     : Data    = Data.new
   property rcpath   : String  = "~/.fburlrc"
   property subcmds  : Subcmds = Subcmds.new
   property paging   : Bool    = false
@@ -15,6 +18,10 @@ class Fburl::Options
   property rawdata  : Bool    = false
   property colorize : Bool    = false
   property? access_token : String? = nil
+
+  def batch?
+    form["batch"]?
+  end
 
   def path!
     path || raise Errors::PathNotFound.new
@@ -26,13 +33,13 @@ class Fburl::Options
     end
     return @command
   end
-  
-  def ssl?
-    protocol == "https"
+
+  def host : String
+    uri.host || raise Errors::InvalidOption.new("uri.host is not set")
   end
 
   def base_url
-    "#{protocol}://#{host}"
+    uri.to_s
   end
 
   def request_path

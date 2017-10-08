@@ -32,9 +32,10 @@ class Fburl::CLI
         % {{program}} config
     EOF
 
-  option host    : String , "-H HOST" , "Request host", "graph.facebook.com"
+  option host    : String , "-H URI" , "Request host", "https://graph.facebook.com"
   option method  : String , "-X METHOD" , "Request method", "GET"
-  option data    : Data   , "-d DATA", "POST data" do extract_data!(v); end
+  option data    : Data   , "-d DATA", "POST query data" do extract_data!(v); end
+  option form    : Data   , "-F FORM", "POST form data" do extract_form!(v); end
   option atoken  : String?, "-a TOKEN", "Your access token", nil
   option rcpath  : String , "-K PATH" , "The path of config file", "~/.fburlrc"
   option dump    : String?, "-D FILE", "Write http headers to the file", nil
@@ -61,10 +62,11 @@ class Fburl::CLI
   def setup
     extract_path!
     opts.dump = dump
-    opts.host = host
+    opts.uri = URI.parse(host)
     opts.method = Method.parse(self.method)
     opts.access_token = atoken
     opts.data.merge!(data)
+    opts.form.merge!(form)
     opts.command = args.shift if args.any?
     opts.subcmds = args
     opts.command = "dryrun" if dryrun
@@ -87,6 +89,10 @@ class Fburl::CLI
     Controller::Registry[opts.command!].new(client, opts, @output)
   end
 
+  def request!
+    controller.as(Controller::RequestController)
+  end
+
   def on_error(err)
     if ! @exit_on_error
       raise err
@@ -107,6 +113,18 @@ class Fburl::CLI
       case pair
       when /^(.*?)=(.*)$/
         opts.data[$1] = $2
+      else
+        raise Errors::EqualNotFound.new(pair)
+      end
+    end
+  end
+
+  private def extract_form!(arg)
+    self.method = "POST"
+    arg.split("&").each do |pair|
+      case pair
+      when /^(.*?)=(.*)$/
+        opts.form[$1] = $2
       else
         raise Errors::EqualNotFound.new(pair)
       end
