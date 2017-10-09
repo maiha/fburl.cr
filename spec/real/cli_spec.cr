@@ -1,5 +1,11 @@
 require "./spec_helper"
 
+private def cli(arg : String, expect : Spec::HttpExpectation)
+  it arg do
+    http_cli(arg).should expect
+  end
+end
+
 describe "(in http server)" do
   prepare_rcfile access_token: "xyz"
 
@@ -54,13 +60,6 @@ private def http_cli(cmd, authorize = " -K #{fburlrc}")
     cli = Fburl::CLI.new(exit_on_error: false)
     cli.setup(cmd + authorize.to_s + " -H #{host}")
     cli.request!.execute
-  end
-end
-
-private def cli(arg : String, expect : Spec::HttpExpectation)
-  it arg do
-    req = http_cli(arg)
-    req.should expect
   end
 end
 
