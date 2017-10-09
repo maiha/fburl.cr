@@ -21,11 +21,8 @@ dependencies:
 require "fburl"
 
 # run at once
-Fburl::CLI.run(["/v2.10/me", "-K", "/tmp/fburlrc"])
-
-# execute sequentially
-req = Fburl.request("/v2.10/me -a foo") # => RequestController
-res = req.execute                       # => HTTP::Client::Response
+client = Facebook::Client.new("/v2.10/me -K /tmp/fburlrc")
+client.execute # => HTTP::Client::Response
 
 # dryrun
 req = Fburl.dryrun("/v2.10/me -a foo")  # => DryrunController

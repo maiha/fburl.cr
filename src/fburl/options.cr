@@ -7,7 +7,6 @@ class Fburl::Options
   property uri      : URI     = URI.parse("https://graph.facebook.com")
   property method   : Method  = Method::GET
   property command  : String  = "request"
-#  property batch    : String? = nil
   property path     : String? = nil
   property data     : Data    = Data.new
   property form     : Data    = Data.new

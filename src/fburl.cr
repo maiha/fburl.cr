@@ -9,6 +9,7 @@ require "pretty"
 require "jq"
 
 require "./ext/*"
+require "./facebook/**"
 require "./fburl/*"
 
 module Fburl
