@@ -27,6 +27,7 @@ class Facebook::Options
   property maxpage    : Int32   = 50
   property rawdata    : Bool    = false
   property colorize   : Bool    = false
+  property maxbatch   : Int32   = 50
   property? access_token : String? = nil
 
   def batch?

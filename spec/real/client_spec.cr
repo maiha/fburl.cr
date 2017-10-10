@@ -32,15 +32,25 @@ describe "(in http server)" do
 
   context "(BATCH)" do
     it "batch with block" do
-      res = http_mock_listen do |port|
-        uri = URI.parse("http://localhost:#{port}").to_s
-        authorize = " -K #{fburlrc}"
-        Facebook::Client.new(authorize.to_s + " -H #{uri}").batch do |batch|
+      res = http_client do |client|
+        client.batch do |batch|
           batch.execute("/v2.10/me")
           batch.execute("/v2.10/act_123/campaigns")
         end
       end
       res.should http("POST /", {"batch" => %([{"method":"GET","relative_url":"v2.10/me"},{"method":"GET","relative_url":"v2.10/act_123/campaigns"}]), "access_token" => "xyz"})
+    end
+
+    it "raises TooManyBatch when request size exceeds max value" do
+      expect_raises(Facebook::Errors::TooManyBatch) do
+        http_client do |client|
+          client.options.maxbatch = 1
+          client.batch do |batch|
+            batch.execute("/v2.10/me")
+            batch.execute("/v2.10/act_123/campaigns")
+          end
+        end
+      end
     end
   end
 
@@ -91,6 +101,14 @@ describe "(in http server)" do
         http_client("/me", " -K /dev/null")
       end
     end
+  end
+end
+
+private def http_client
+  http_mock_listen do |port|
+    host = URI.parse("http://localhost:#{port}").to_s
+    client = Facebook::Client.new("-K #{fburlrc} -H #{host}")
+    yield client
   end
 end
 

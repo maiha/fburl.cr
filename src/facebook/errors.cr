@@ -25,4 +25,5 @@ module Facebook::Errors
   define_error NotAuthorized  = "You need to authorize first."
   define_error UnknownCommand = "Unknown command: %s"
   define_error EqualNotFound  = "Data needs '=', but '%s' is given"
+  define_error TooManyBatch   = "Too many requests in batch message. %s"
 end

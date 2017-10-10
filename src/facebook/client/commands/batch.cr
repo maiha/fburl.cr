@@ -21,10 +21,13 @@ class Facebook::Client
     class BatchApi
       property array : Array(Options) = Array(Options).new
 
-      def initialize(@args : Array(String))
+      def initialize(@args : Array(String), @max : Int32 = 50)
       end
       
       def execute(args)
+        if array.size >= @max
+          raise Errors::TooManyBatch.new("Maximum batch size is #{@max}")
+        end
         array << Options.parse!(args)
       end
 
@@ -39,7 +42,7 @@ class Facebook::Client
     end
     
     def batch : HTTP::Client::Response
-      api = BatchApi.new(original_args)
+      api = BatchApi.new(original_args, max: options.maxbatch)
       yield api
       api.execute
     end
