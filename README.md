@@ -32,8 +32,8 @@
 #### basic
 
 ```shell
-% fburl /v2.10/me      # perform the GET request
-% fburl /v2.10/me -D - # dump header like cURL
+% fburl /me      # perform the GET request
+% fburl /me -D - # dump header like cURL
 ```
 
 - TODO: now support only `GET` method
@@ -44,15 +44,15 @@ If `--next` option is given, client automatically follows **next** link
 until the page count reaches `--max-next` (default: 50).
 
 ```shell
-% fburl /v2.10/...        | jq '.data|length'  # => 25
-% fburl /v2.10/... --next | jq '.data|length'  # => 128
+% fburl /...        | jq '.data|length'  # => 25
+% fburl /... --next | jq '.data|length'  # => 128
 ```
 
 #### dryrun
 
 ```shell
-% fburl /v2.10/me -n      # print curl command 
-% fburl /v2.10/me -n | sh # run it
+% fburl /me -n      # print curl command 
+% fburl /me -n | sh # run it
 ```
 
 ## Roadmap

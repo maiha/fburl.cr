@@ -21,12 +21,12 @@ dependencies:
 require "fburl"
 
 # basic
-client = Facebook::Client.new("/v2.10/me -K /tmp/fburlrc")
+client = Facebook::Client.new("/me -K /tmp/fburlrc")
 client.execute # => HTTP::Client::Response
 
 # append args
 client = Facebook::Client.new("-K /tmp/fburlrc")
-client.execute("/v2.10/me") # as same as above
+client.execute("/me") # as same as above
 
 # batch mode (experimental)
 client = Facebook::Client.new("-K /tmp/fburlrc")
@@ -36,7 +36,7 @@ client.batch do |batch|
 end # => HTTP::Client::Response
 
 # dryrun
-req = Fburl.dryrun("/v2.10/me -a foo")  # => DryrunController
+req = Fburl.dryrun("/me -a foo")  # => DryrunController
 res = req.curl_string                   # => "curl -G ..."
 ```
 
