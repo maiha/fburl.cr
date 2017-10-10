@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   fburl:
     github: maiha/fburl.cr
-    version: 0.5.1
+    version: 0.5.2
 ```
 
 ## Usage
@@ -32,7 +32,7 @@ client.execute("/v2.10/me") # as same as above
 client = Facebook::Client.new("-K /tmp/fburlrc")
 client.batch do |batch|
   batch.execute("/v2.10/act_123/campaigns")
-  batch.execute("/v2.10/act_123/campaigns")
+  batch.execute("/v2.10/act_456/campaigns")
 end # => HTTP::Client::Response
 
 # dryrun
