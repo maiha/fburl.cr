@@ -56,19 +56,16 @@ describe "(in http server)" do
 
   context "(Append Args)" do
     it "Client.new(args1).execute(args2)" do
-      res = http_mock_listen do |port|
-        host = URI.parse("http://localhost:#{port}").to_s
-        client = Facebook::Client.new("-K #{fburlrc} -H #{host} -d a=1")
+      res = http_client do |client|
         client.execute("/v1")
       end
-      res.should http("GET /v1?a=1&access_token=xyz")
+      res.should http("GET /v1?access_token=xyz")
     end
 
     it "Client.new(args1).merge(args2).execute" do
-      res = http_mock_listen do |port|
-        host = URI.parse("http://localhost:#{port}").to_s
-        client = Facebook::Client.new("-K #{fburlrc} -H #{host} -d a=1")
+      res = http_client do |client|
         client = client.merge("/v1")
+        client = client.merge("-d a=1")
         client.execute
       end
       res.should http("GET /v1?a=1&access_token=xyz")
