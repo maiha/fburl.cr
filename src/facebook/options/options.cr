@@ -62,7 +62,7 @@ class Facebook::Options
   end
 
   # {"method":"GET","relative_url":"v2.10/act_123/campaigns?fields=account_id%2Ceffective_status&effective_status=%5B%22ACTIVE%22%5D"}
-  def batch_string
+  def batch_value
     hash = {
       "method" => method.to_s,
       "relative_url" => request_path.sub(%r{\A/}, ""),

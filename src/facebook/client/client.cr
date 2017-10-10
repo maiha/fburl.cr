@@ -20,7 +20,6 @@ class Facebook::Client
     if options.commands.any?
       raise Errors::UnknownCommand.new(options.commands.join(","))
     end
-    authorize!
   end
 
   def merge(args : String) : Facebook::Client
@@ -32,6 +31,7 @@ class Facebook::Client
   end
 
   def execute : HTTP::Client::Response
+    authorize!
     if options.method.get?
       get(options)
     elsif options.method.post?

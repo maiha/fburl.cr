@@ -31,6 +31,13 @@ describe "(in http server)" do
   end
 
   context "(BATCH)" do
+    it "batch without block" do
+      batch = Facebook::Client.new.batch
+      batch.responds_to?(:execute).should be_true
+      batch.responds_to?(:value).should be_true
+      batch.responds_to?(:arg).should be_true
+    end
+
     it "batch with block" do
       res = http_client do |client|
         client.batch do |batch|
@@ -39,6 +46,18 @@ describe "(in http server)" do
         end
       end
       res.should http("POST /", {"batch" => %([{"method":"GET","relative_url":"v2.10/me"},{"method":"GET","relative_url":"v2.10/act_123/campaigns"}]), "access_token" => "xyz"})
+    end
+
+    it "#value" do
+      batch = Facebook::Client.new.batch
+      batch.execute("/v2.10/me")
+      batch.value.should eq(%([{"method":"GET","relative_url":"v2.10/me"}]))
+    end
+
+    it "#arg" do
+      batch = Facebook::Client.new.batch
+      batch.execute("/v2.10/me")
+      batch.arg.should eq(%(-F batch=[{"method":"GET","relative_url":"v2.10/me"}]))
     end
 
     it "raises TooManyBatch when request size exceeds max value" do
@@ -95,7 +114,7 @@ describe "(in http server)" do
   context "(without authorization)" do
     it "raises NotAuthorized" do
       expect_raises(Facebook::Errors::NotAuthorized) do
-        http_client("/me", " -K /dev/null")
+        http_client("/me -K /dev/null")
       end
     end
   end
@@ -109,9 +128,6 @@ private def http_client
   end
 end
 
-private def http_client(cmd, authorize = " -K #{fburlrc}")
-  http_mock_listen do |port|
-    host = URI.parse("http://localhost:#{port}").to_s
-    Facebook::Client.new(cmd + authorize.to_s + " -H #{host}").execute
-  end
+private def http_client(cmd)
+  http_client(&.execute(cmd))
 end

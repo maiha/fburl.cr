@@ -18,7 +18,7 @@ class Facebook::Client
   # Facebook::Client.new(%(-F batch=[{"method":"GET","relative_url":"v1/me"},{"method":"GET","relative_url":"v1/act_123/campaigns"}]))
   # ```
   module Commands::Batch
-    private class BatchApi
+    class BatchApi
       def initialize(@max : Int32 = 50)
         @array = Array(Options).new
       end
@@ -30,15 +30,23 @@ class Facebook::Client
         @array << Options.parse!(args)
       end
 
-      def batch_string
-        "[%s]" % @array.map(&.batch_string).join(",")
+      def value : String
+        "[%s]" % @array.map(&.batch_value).join(",")
+      end
+
+      def arg : String
+        "-F batch=#{value}"
       end
     end
     
+    def batch : BatchApi
+      BatchApi.new(max: options.maxbatch)
+    end
+
     def batch : HTTP::Client::Response
-      api = BatchApi.new(max: options.maxbatch)
+      api = batch
       yield api
-      merge(["-F", "batch=#{api.batch_string}"]).execute
+      merge(api.arg).execute
     end
   end
 end
