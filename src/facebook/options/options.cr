@@ -52,14 +52,31 @@ class Facebook::Options
   def request_path
     case method
     when .get?
-      params = Array(String).new
-      data.each do |key, value|
-        params << "%s=%s" % [URI.escape(key), URI.escape(value)]
-      end
-      delimiter = path!.includes?("?") ? "&" : "?"
-      path! + delimiter + params.join("&")
+      build_request_path
+    when .post?
+      batch? ? "/" : build_request_path
     else
       path!
     end
+  end
+
+  # {"method":"GET","relative_url":"v2.10/act_123/campaigns?fields=account_id%2Ceffective_status&effective_status=%5B%22ACTIVE%22%5D"}
+  def batch_string
+    hash = {
+      "method" => method.to_s,
+      "relative_url" => request_path.sub(%r{\A/}, ""),
+    }
+    hash.to_json
+  end
+
+  private def build_request_path
+    return path! if data.empty?
+
+    params = Array(String).new
+    data.each do |key, value|
+      params << "%s=%s" % [URI.escape(key), URI.escape(value)]
+    end
+    delimiter = path!.includes?("?") ? "&" : "?"
+    path! + delimiter + params.join("&")
   end
 end

@@ -46,6 +46,6 @@ abstract class Fburl::Controller::Base
   protected def check_json_syntax!(buf : String)
     JSON.parse(buf)
   rescue err
-    raise Errors::BatchJsonError.new(err.to_s)
+    raise Errors::BatchJsonError.new("#{err}: '#{buf}'")
   end
 end

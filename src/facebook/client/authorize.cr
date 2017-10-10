@@ -10,7 +10,7 @@ class Facebook::Client
         when .post?
           options.form["access_token"] = token
           if batch = options.form["batch"]?
-                       check_json_syntax!(batch)
+            check_json_syntax!(batch)
           end
         else
           raise Errors::NotImplemented.new("#{options.method} method with access_token")
@@ -23,7 +23,7 @@ class Facebook::Client
     private def check_json_syntax!(buf : String)
       JSON.parse(buf)
     rescue err
-      raise Errors::BatchJsonError.new(err.to_s)
+      raise Errors::BatchJsonError.new("#{err}: '#{buf}'")
     end
   end
 end

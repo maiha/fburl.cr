@@ -13,6 +13,8 @@ describe "(in http server)" do
     client "/v1"         , http("GET /v1?access_token=xyz")
     client "/v1 -d a=1"  , http("GET /v1?a=1&access_token=xyz")
     client "/v1 -d a=1:2", http("GET /v1?a=1%3A2&access_token=xyz")
+    client "/v1 -d a=x=1", http("GET /v1?a=x%3D1&access_token=xyz")
+    client "/v1 -d a=x&1", http("GET /v1?a=x%261&access_token=xyz")
 
     client "-d b=2 /v1 -d a=1", http("GET /v1?b=2&a=1&access_token=xyz")
   end
@@ -22,7 +24,10 @@ describe "(in http server)" do
   end
 
   context "(BATCH)" do
-    client %(-F batch=[{"method":"GET","relative_url":"me"}]), http("POST /", {"batch" => %([{"method":"GET","relative_url":"me"}]), "access_token" => "xyz"})
+    client %(-F batch=[{"method":"GET","relative_url":"me"}]),
+      http("POST /", {"batch" => %([{"method":"GET","relative_url":"me"}]), "access_token" => "xyz"})
+    client %(-F batch=[{"method":"GET","relative_url":"v2.10/act_123/campaigns?fields=account_id%2Ceffective_status&effective_status=%5B%22ACTIVE%22%5D"}]),
+      http("POST /", {"batch" => %([{"method":"GET","relative_url":"v2.10/act_123/campaigns?fields=account_id%2Ceffective_status&effective_status=%5B%22ACTIVE%22%5D"}]), "access_token" => "xyz"})
   end
 
   context "(error features)" do

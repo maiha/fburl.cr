@@ -12,8 +12,7 @@ class Facebook::Client
         end
       end
 
-      path = options.batch? ? "/" : options.request_path
-      request = HTTP::Request.new(options.method.to_s, path, headers, body)
+      request = HTTP::Request.new(options.method.to_s, options.request_path, headers, body)
       execute(request)
     end
   end

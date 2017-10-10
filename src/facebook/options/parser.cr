@@ -40,25 +40,21 @@ class Facebook::Options::Parser
   end
 
   private def extract_data!(arg)
-    arg.split("&").each do |pair|
-      case pair
-      when /^(.*?)=(.*)$/
-        opts.data[$1] = $2
-      else
-        raise Errors::EqualNotFound.new(pair)
-      end
+    case arg
+    when /^(.*?)=(.*)$/
+      opts.data[$1] = $2
+    else
+      raise Errors::EqualNotFound.new(arg)
     end
   end
 
   private def extract_form!(arg)
     self.method = "POST"
-    arg.split("&").each do |pair|
-      case pair
-      when /^(.*?)=(.*)$/
-        opts.form[$1] = $2
-      else
-        raise Errors::EqualNotFound.new(pair)
-      end
+    case arg
+    when /^(.*?)=(.*)$/
+      opts.form[$1] = $2
+    else
+      raise Errors::EqualNotFound.new(arg)
     end
   end
 
