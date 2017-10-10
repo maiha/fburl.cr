@@ -20,9 +20,20 @@ dependencies:
 ```crystal
 require "fburl"
 
-# run at once
+# basic
 client = Facebook::Client.new("/v2.10/me -K /tmp/fburlrc")
 client.execute # => HTTP::Client::Response
+
+# append args
+client = Facebook::Client.new("-K /tmp/fburlrc")
+client.execute("/v2.10/me") # as same as above
+
+# batch mode (experimental)
+client = Facebook::Client.new("-K /tmp/fburlrc")
+client.batch do |batch|
+  batch.execute("/v2.10/act_123/campaigns")
+  batch.execute("/v2.10/act_123/campaigns")
+end # => HTTP::Client::Response
 
 # dryrun
 req = Fburl.dryrun("/v2.10/me -a foo")  # => DryrunController

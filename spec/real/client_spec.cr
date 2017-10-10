@@ -23,11 +23,46 @@ describe "(in http server)" do
     client "/v1/me -F fields=id,name", http("POST /v1/me", {"fields" => "id,name", "access_token" => "xyz"})
   end
 
-  context "(BATCH)" do
+  context "(POST: BATCH)" do
     client %(-F batch=[{"method":"GET","relative_url":"me"}]),
       http("POST /", {"batch" => %([{"method":"GET","relative_url":"me"}]), "access_token" => "xyz"})
     client %(-F batch=[{"method":"GET","relative_url":"v2.10/act_123/campaigns?fields=account_id%2Ceffective_status&effective_status=%5B%22ACTIVE%22%5D"}]),
       http("POST /", {"batch" => %([{"method":"GET","relative_url":"v2.10/act_123/campaigns?fields=account_id%2Ceffective_status&effective_status=%5B%22ACTIVE%22%5D"}]), "access_token" => "xyz"})
+  end
+
+  context "(BATCH)" do
+    it "batch with block" do
+      res = http_mock_listen do |port|
+        uri = URI.parse("http://localhost:#{port}").to_s
+        authorize = " -K #{fburlrc}"
+        Facebook::Client.new(authorize.to_s + " -H #{uri}").batch do |batch|
+          batch.execute("/v2.10/me")
+          batch.execute("/v2.10/act_123/campaigns")
+        end
+      end
+      res.should http("POST /", {"batch" => %([{"method":"GET","relative_url":"v2.10/me"},{"method":"GET","relative_url":"v2.10/act_123/campaigns"}]), "access_token" => "xyz"})
+    end
+  end
+
+  context "(Append Args)" do
+    it "Client.new(args1).execute(args2)" do
+      res = http_mock_listen do |port|
+        host = URI.parse("http://localhost:#{port}").to_s
+        client = Facebook::Client.new("-K #{fburlrc} -H #{host} -d a=1")
+        client.execute("/v1")
+      end
+      res.should http("GET /v1?a=1&access_token=xyz")
+    end
+
+    it "Client.new(args1).merge(args2).execute" do
+      res = http_mock_listen do |port|
+        host = URI.parse("http://localhost:#{port}").to_s
+        client = Facebook::Client.new("-K #{fburlrc} -H #{host} -d a=1")
+        client = client.merge("/v1")
+        client.execute
+      end
+      res.should http("GET /v1?a=1&access_token=xyz")
+    end
   end
 
   context "(error features)" do
