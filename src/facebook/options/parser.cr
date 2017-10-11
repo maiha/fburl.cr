@@ -8,7 +8,7 @@ class Facebook::Options::Parser
   option data    : Data   , "-d DATA", "POST query data" do extract_data!(v); end
   option form    : Data   , "-F FORM", "POST form data" do extract_form!(v); end
   option atoken  : String?, "-a TOKEN", "Your access token", nil
-  option rcpath  : String , "-K PATH" , "The path of config file", "~/.fburlrc"
+  option rcpath  : String?, "-K PATH" , "The path of config file", nil
   option rawdata : Bool   , "--raw", "Print raw response without stripping '.data'", false
   option paging  : Bool   , "--next", "Follow next paging link", false
   option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 50
@@ -23,7 +23,6 @@ class Facebook::Options::Parser
     option_parser.parse(args)
 
     opts.rcpath       = rcpath
-    opts.try_config   = Try(Config).try{ Config.load(opts.rcpath) }
     opts.access_token = atoken || opts.config_access_token?
 
     opts.uri          = URI.parse(uri)

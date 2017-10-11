@@ -41,7 +41,7 @@ res = req.curl_string                   # => "curl -G ..."
 ```
 
 #### NOTE
-- authorize: We need some auth method like '-K' or '-a' because `~/.fburlrc` is not automatically loaded in library mode.
+- authorize: We need some authorization method like '-K' or '-a' because `~/.fburlrc` is not automatically loaded in library mode.
 - batch: Maximum request size is 50. Otherwise, 400 error from Facebook API.
 
 ## Development

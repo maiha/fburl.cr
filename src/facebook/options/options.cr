@@ -13,7 +13,6 @@ class Facebook::Options
     PATCH
   end
 
-  property try_config : Try(Config) = Try(Config).try { raise "not initialized" }
   property ua         : String  = USER_AGENT
   property dump       : String? = nil
   property uri        : URI     = URI.parse("https://graph.facebook.com")
@@ -22,7 +21,7 @@ class Facebook::Options
   property path       : String? = nil
   property data       : Data    = Data.new
   property form       : Data    = Data.new
-  property rcpath     : String  = "~/.fburlrc"
+  property rcpath     : String? = nil
   property paging     : Bool    = false
   property maxpage    : Int32   = 50
   property rawdata    : Bool    = false
@@ -35,9 +34,9 @@ class Facebook::Options
   end
 
   def config_access_token? : String?
-    try_config.get?.try(&.profile.access_token?)
+    rcpath.try{|path| Config.load(path).profile.access_token?}
   end
-
+  
   def path!
     path || raise Errors::PathNotFound.new
   end
