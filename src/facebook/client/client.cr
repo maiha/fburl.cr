@@ -46,8 +46,8 @@ class Facebook::Client
   def execute(request : HTTP::Request, client : HTTP::Client? = nil) : HTTP::Client::Response
     request.headers["Host"] ||= options.host
     request.headers["UserAgent"] ||= options.ua
-
     client ||= HTTP::Client.new(options.uri)
+    client.compress = options.compress
     client.exec(request)
   end
 

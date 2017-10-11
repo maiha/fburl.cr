@@ -17,6 +17,7 @@ class Facebook::Options
   property dump       : String? = nil
   property uri        : URI     = URI.parse("https://graph.facebook.com")
   property method     : Method  = Method::GET
+  property compress   : Bool    = true
   property commands   : Array(String) = Array(String).new
   property path       : String? = nil
   property data       : Data    = Data.new
