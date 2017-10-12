@@ -1,5 +1,5 @@
 class Facebook::Options
-  alias Data    = Hash(String, String)
+  alias Data = Hash(String, String)
   
   SUPPORTED_COMMANDS = Controller::Registry.keys
   USER_AGENT = "fburl/%s" % Shard.version

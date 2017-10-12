@@ -36,8 +36,9 @@ client.batch do |batch|
 end # => HTTP::Client::Response
 
 # dryrun
-req = Fburl.dryrun("/me -a foo")  # => DryrunController
-res = req.curl_string                   # => "curl -G ..."
+client = Facebook::Client.new("/me -a foo")
+client.dryrun      # => #<Facebook::Client::Dryrun>
+client.dryrun.to_s # => "curl -s -G -d 'access_token=foo' https://graph.facebook.com/me"
 ```
 
 #### NOTE
