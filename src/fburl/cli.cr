@@ -42,8 +42,8 @@ class Fburl::CLI
   option dryrun  : Bool   , "-n", "Dryrun with printing curl command", false
   option rawdata : Bool   , "--raw", "Print raw response without stripping '.data'", false
   option color   : Bool   , "--color", "Colorize json string", false
-  option paging  : Bool   , "--next", "Follow next paging link", false
-  option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 50
+  option paging  : Bool   , "-r", "Follow next paging link", false
+  option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 15
   option verbose : Bool   , "-v", "Verbose output", false
   option version : Bool   , "--version", "Print the version and exit", false
   option help    : Bool   , "--help"   , "Output this help and exit" , false

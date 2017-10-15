@@ -40,12 +40,12 @@
 
 #### paging
 
-If `--next` option is given, client automatically follows **next** link
-until the page count reaches `--max-next` (default: 50).
+If `-r` option is given, client automatically follows **next** link
+until the page count reaches `--max-next` (default: 15).
 
 ```shell
-% fburl /...        | jq '.data|length'  # => 25
-% fburl /... --next | jq '.data|length'  # => 128
+% fburl /...    | jq '.data|length'  # => 25
+% fburl /... -r | jq '.data|length'  # => 128
 ```
 
 #### dryrun

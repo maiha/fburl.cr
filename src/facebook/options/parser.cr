@@ -10,8 +10,8 @@ class Facebook::Options::Parser
   option atoken  : String?, "-a TOKEN", "Your access token", nil
   option rcpath  : String?, "-K PATH" , "The path of config file", nil
   option rawdata : Bool   , "--raw", "Print raw response without stripping '.data'", false
-  option paging  : Bool   , "--next", "Follow next paging link", false
-  option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 50
+  option follow  : Bool   , "-r", "Follow paging recursively", false
+  option maxpage : Int32  , "--max-next COUNT", "Max number of next paging", 15
 
   def self.parse!(args : Array(String))
     obj = new
@@ -28,7 +28,7 @@ class Facebook::Options::Parser
     opts.uri          = URI.parse(uri)
     opts.method       = Method.parse(self.method)
     opts.rawdata      = rawdata
-    opts.paging       = paging
+    opts.recursive    = follow
     opts.maxpage      = maxpage
 
     opts.data.merge!(data)

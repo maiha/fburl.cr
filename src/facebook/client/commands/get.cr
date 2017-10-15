@@ -2,12 +2,12 @@ class Facebook::Client
   module Commands::Get
     protected def get(options : Options) : HTTP::Client::Response
       res = get(options.request_path)
-      if options.paging && res.status_code == 200
-        get_next_pages(options, res)
-      elsif !options.rawdata && res.status_code == 200
-        extract_data_wrapper(res)
-      else
+      if res.status_code != 200
         res
+      elsif options.recursive
+        get_next_pages(options, res)
+      else
+        process_output_format(res)
       end
     end
 
@@ -21,7 +21,7 @@ class Facebook::Client
 
     private def get_next_pages(options, res) : HTTP::Client::Response
       data = IO::Memory.new
-      url  = accumulate_data_and_return_next!(data, res.body) || return res
+      url = accumulate_data_and_return_next!(data, res.body)
 
       # we have already finished `GET` for 1st page
       (2..options.maxpage).each do |page|
@@ -38,16 +38,26 @@ class Facebook::Client
       # closing data
       data << (data.pos == 0 ? "null" : "]")
       body = String.new(data.to_slice)
-      body = String.build{|io| io << "{\"data\": " << body << "}"  } if options.rawdata
+
+      if options.rawdata
+        body = String.build{|io| io << "{\"data\": " << body << "}" }
+      end
 
       # build accumulated response
       build_response(res, body)
     end
 
     # body: "{data: ...}" => "..."
-    private def extract_data_wrapper(res) : HTTP::Client::Response
-      body = JSON.parse(res.body)["data"]?.try(&.to_json) || return res
-      build_response(res, body)
+    private def process_output_format(res) : HTTP::Client::Response
+      if options.rawdata
+        return res
+      else
+        if body = JSON.parse(res.body)["data"]?.try(&.to_json)
+          return build_response(res, body)
+        else
+          return res
+        end
+      end
     end
 
     private def accumulate_data_and_return_next!(io, body) : String?

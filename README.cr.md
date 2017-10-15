@@ -39,6 +39,10 @@ end # => HTTP::Client::Response
 client = Facebook::Client.new("/me -a foo")
 client.dryrun      # => #<Facebook::Client::Dryrun>
 client.dryrun.to_s # => "curl -s -G -d 'access_token=foo' https://graph.facebook.com/me"
+
+# recursive(paging)
+client = Facebook::Client.new("-K /tmp/fburlrc")
+client.execute("... -r") # run recursively about "paging.next"
 ```
 
 #### NOTE

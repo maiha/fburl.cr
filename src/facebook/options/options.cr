@@ -23,11 +23,11 @@ class Facebook::Options
   property data       : Data    = Data.new
   property form       : Data    = Data.new
   property rcpath     : String? = nil
-  property paging     : Bool    = false
   property maxpage    : Int32   = 50
   property rawdata    : Bool    = false
   property colorize   : Bool    = false
   property maxbatch   : Int32   = 50
+  property recursive  : Bool    = false
   property? access_token : String? = nil
 
   def batch?
