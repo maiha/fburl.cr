@@ -36,7 +36,7 @@ class Facebook::Client
       end
 
       # closing data
-      data << (data.pos == 0 ? "null" : "]")
+      data << (data.pos == 0 ? "[]" : "]")
       body = String.new(data.to_slice)
 
       if options.rawdata
