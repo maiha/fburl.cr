@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   fburl:
     github: maiha/fburl.cr
-    version: 0.6.0
+    version: 0.6.1
 ```
 
 ## Usage
