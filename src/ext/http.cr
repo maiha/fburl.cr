@@ -1,7 +1,5 @@
 module HTTP::FormData::Accessor
-  def form_data?
-    headers["Content-Type"]? =~ /boundary="(.*?)"/
-  end
+  func form_data? = headers["Content-Type"]? =~ /boundary="(.*?)"/
 
   var form_data = Hash(String, String).new.tap{|data|
     case headers["Content-Type"]?
@@ -15,15 +13,11 @@ module HTTP::FormData::Accessor
 end
 
 class HTTP::Client::Response
-  def protocol_header : String
-    String.build{|io| to_io(io)}.split(/\r?\n\r?\n/).first
-  end
+  func protocol_header = String.build{|io| to_io(io)}.split(/\r?\n\r?\n/).first
 end
 
 class HTTP::Request
   include HTTP::FormData::Accessor
 
-  def protocol_body : String
-    String.build{|io| to_io(io)}.split(/\r?\n\r?\n/, 2).last
-  end
+  func protocol_body = String.build{|io| to_io(io)}.split(/\r?\n\r?\n/, 2).last
 end

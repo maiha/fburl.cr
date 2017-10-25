@@ -7,6 +7,7 @@ require "try"
 require "toml-config"
 require "pretty"
 require "jq"
+require "func"
 
 require "./ext/*"
 require "./facebook/**"
