@@ -1,6 +1,6 @@
 class Fburl::Controller::RequestController < Fburl::Controller::Base
-  val authorize = true
-  val subcmds   = false
+  var authorize = true
+  var subcmds   = false
 
   def dispatch
     response = execute

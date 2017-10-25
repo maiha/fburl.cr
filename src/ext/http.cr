@@ -3,7 +3,7 @@ module HTTP::FormData::Accessor
     headers["Content-Type"]? =~ /boundary="(.*?)"/
   end
 
-  val form_data = Hash(String, String).new.tap{|data|
+  var form_data = Hash(String, String).new.tap{|data|
     case headers["Content-Type"]?
     when /boundary="(.*?)"/
       boundary=$1

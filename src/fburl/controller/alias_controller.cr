@@ -1,8 +1,8 @@
 require "./base"
 
 class Fburl::Controller::AliasController < Fburl::Controller::Base
-  val authorize = false
-  val subcmds   = true
+  var authorize = false
+  var subcmds   = true
 
   def dispatch
     case options.subcmds.size

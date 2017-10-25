@@ -1,8 +1,8 @@
 require "./base"
 
 class Fburl::Controller::ConfigController < Fburl::Controller::Base
-  val authorize = false
-  val subcmds   = true
+  var authorize = false
+  var subcmds   = true
 
   SUB_COMMANDS = Array(String).new
 
