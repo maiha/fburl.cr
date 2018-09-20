@@ -1,30 +1,16 @@
 name: fburl
 version: 0.6.1
 
-crystal: 0.22.0
-
 dependencies:
-  var:
-    github: maiha/var.cr
-    version: ">= 0.2.0"
   app:
     github: maiha/app.cr
-    version: ">= 0.4.1"
-  toml-config:
-    github: maiha/toml-config.cr
-    version: ">= 0.3.0"
-  opts:
-    github: maiha/opts.cr
-    version: ">= 0.4.1"
-  try:
-    github: maiha/try.cr
-    version: ">= 0.3.0"
+    version: ">= 0.5.0"
   pretty:
     github: maiha/pretty.cr
-    version: ">= 0.2.0"
+    version: ">= 0.6.5"
   jq:
     github: maiha/jq.cr
-    version: ">= 0.5.0"
+    version: ">= 0.6.0"
   func:
     github: maiha/func.cr
     version: ">= 0.1.0"

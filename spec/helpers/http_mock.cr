@@ -1,7 +1,7 @@
 def http_mock_listen(timeout = 3)
   listen  = Channel(Int32).new
   request = Channel::Buffered(String).new
-  server  = build_server(request)
+  server, port = build_server_and_port(request)
 
   spawn do
     sleep timeout
@@ -17,8 +17,8 @@ def http_mock_listen(timeout = 3)
   spawn do
     loop do
       sleep 0.1
-      if server.port != 0
-        listen.send(server.port)
+      if port != 0
+        listen.send(port)
         break
       end
     end
@@ -39,8 +39,8 @@ def http_mock_listen(timeout = 3)
   return HTTP::Request.from_io(io).as(HTTP::Request).not_nil!
 end
 
-private def build_server(request)
-  server = HTTP::Server.new("127.0.0.1", 0) do |ctx|
+private def build_server_and_port(request)
+  server = HTTP::Server.new do |ctx|
     ctx.response.content_type = "javascript"
     ctx.response.print "{}"
 
@@ -49,5 +49,6 @@ private def build_server(request)
     request.send(String.new(io.to_slice))
   end
 
-  return server
+  bound = server.bind_tcp("127.0.0.1", 0)
+  return {server, bound.port}
 end
