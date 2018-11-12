@@ -55,6 +55,74 @@ until the page count reaches `--max-next` (default: 15).
 % fburl /me -n | sh # run it
 ```
 
+## Example
+
+#### 1. get my `account_id`
+
+```shell
+$ ./fburl /me
+{
+  "name": "...",
+  "id": "123456"
+}
+```
+
+#### 2. get `User Adaccounts`
+-  `/v4.0/<USER_ID>/adaccounts`
+
+```shell
+$ ./fburl /v4.0/123456/adaccounts
+[
+  {
+    "account_id": "212345",
+    "id": "act_212345"
+  },
+...
+```
+
+same as `/v4.0/me/adaccounts`
+
+```console
+$ ./fburl /v4.0/me/adaccounts -d fields=account_id,name -d limit=3
+```
+
+#### 3. get campaigns
+- `GET /v4.0/{ad-account-id}/campaigns HTTP/1.1`
+- https://developers.facebook.com/docs/marketing-api/reference/ad-account/campaigns/
+
+```shell
+$ ./fburl /v4.0/act_212345/campaigns
+[
+  {
+    "id": "312345"
+   },
+...
+```
+
+#### 4. get `Campaign Ads`
+- `GET /v4.0/{campaign-id}/ads HTTP/1.1`
+- https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/ads/
+
+```shell
+$ ./fburl /v4.0/312345/ads
+[
+  {
+    "id": "412345"
+  },
+...
+```
+
+#### 5. get adcreativs
+
+```shell
+$ ./fburl /v4.0/act_212345/adcreatives
+[
+  {
+    "id": "512345"
+   },
+...
+```
+
 ## Roadmap
 
 #### v1.0.0

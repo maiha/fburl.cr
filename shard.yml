@@ -7,13 +7,10 @@ dependencies:
     version: ">= 0.5.0"
   pretty:
     github: maiha/pretty.cr
-    version: ">= 0.6.5"
+    version: ">= 0.7.3"
   jq:
     github: maiha/jq.cr
-    version: ">= 0.6.0"
-  func:
-    github: maiha/func.cr
-    version: ">= 0.1.0"
+    version: ">= 0.8.0"
 
 authors:
   - maiha <maiha@wota.jp>

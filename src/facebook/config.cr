@@ -29,14 +29,14 @@ class Facebook::Config
   end
 
   private def load_aliases!(toml)
-    hash = toml.hash("alias") rescue Aliases.new
+    hash = toml.as_hash("alias") rescue Aliases.new
     hash.each do |key, val|
       aliases[key] = val.to_s
     end
   end
 
   private def load_profile!(toml)
-    hash = toml.hash("profile") rescue Profile.new
+    hash = toml.as_hash("profile") rescue Profile.new
     hash.each do |key, val|
       profile[key] = val.to_s
     end

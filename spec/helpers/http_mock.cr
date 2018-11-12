@@ -34,7 +34,6 @@ def http_mock_listen(timeout = 3)
     end
   end  
 
-  request.wait_for_receive
   io = IO::Memory.new(request.receive)
   return HTTP::Request.from_io(io).as(HTTP::Request).not_nil!
 end
