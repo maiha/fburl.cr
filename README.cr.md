@@ -2,7 +2,7 @@
 
 fburl for [Crystal](http://crystal-lang.org/).
 
-- crystal: 0.26.1
+- crystal: 0.30.0
 
 ## Installation
 
@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   fburl:
     github: maiha/fburl.cr
-    version: 0.6.1
+    version: 0.6.2
 ```
 
 ## Usage
